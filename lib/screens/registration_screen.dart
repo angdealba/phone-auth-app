@@ -1,5 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:phone_auth/widgets/custom_button.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -25,6 +26,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    phoneController.selection = TextSelection.fromPosition(
+      TextPosition(
+        offset: phoneController.text.length,
+      ),
+    );
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -62,6 +68,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 TextFormField(
                   cursorColor: Colors.pink,
                   controller: phoneController,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                   onChanged: (value) {
                     setState(() {
                       phoneController.text = value;
@@ -69,6 +79,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                   decoration: InputDecoration(
                     hintText: "Enter phone number",
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      color: Colors.grey.shade600,
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Colors.black12),
@@ -103,19 +118,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     suffixIcon: phoneController.text.length > 9
                         ? Container(
-                            height: 10,
-                            width: 10,
+                            height: 30,
+                            width: 30,
+                            margin: const EdgeInsets.all(10.0),
                             decoration: const BoxDecoration(
                                 shape: BoxShape.circle, color: Colors.green),
                             child: const Icon(
                               Icons.done,
                               color: Colors.white,
-                              size: 25,
+                              size: 20,
                             ),
                           )
                         : null,
                   ),
                 ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: CustomButton(
+                    onPressed: () {},
+                    text: "Login",
+                  ),
+                )
               ],
             ),
           ),

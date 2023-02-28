@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:phone_auth/provider/auth_provider.dart';
+import 'package:phone_auth/screens/home_screen.dart';
 import 'package:phone_auth/screens/registration_screen.dart';
 import 'package:phone_auth/widgets/custom_button.dart';
 
@@ -12,6 +14,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -49,11 +52,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   height: 50,
                   child: CustomButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const RegistrationScreen()));
+                      ap.isSignedIn == true
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()))
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegistrationScreen()));
                     },
                     text: "Get Started",
                   ),

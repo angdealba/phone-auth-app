@@ -3,6 +3,7 @@ import 'package:phone_auth/provider/auth_provider.dart';
 import 'package:phone_auth/screens/home_screen.dart';
 import 'package:phone_auth/screens/registration_screen.dart';
 import 'package:phone_auth/widgets/custom_button.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -52,7 +53,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   height: 50,
                   child: CustomButton(
                     onPressed: () {
-                      ap.isSignedIn == true
+                      ap.isSignedIn ==
+                              true //when true fetch shared preference data
                           ? Navigator.push(
                               context,
                               MaterialPageRoute(

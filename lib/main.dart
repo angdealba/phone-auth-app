@@ -4,7 +4,6 @@ import 'package:phone_auth/provider/auth_provider.dart';
 import 'package:phone_auth/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -18,13 +17,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=> AuthProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: WelcomeScreen(),
         title: "FlutterPhoneAuth",
-      );
-    ),
+      ),
+    );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phone_auth/provider/auth_provider.dart';
 import 'package:phone_auth/utils/utils.dart';
 import 'package:phone_auth/widgets/custom_button.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 class OtpScreen extends StatefulWidget {
   final String verificationId;
@@ -15,9 +17,16 @@ class _OtpScreenState extends State<OtpScreen> {
   String? otpCode;
   @override
   Widget build(BuildContext context) {
+    final isLoading = Provider.of<AuthProvider>(context, listen: true).isLoading;
     return Scaffold(
       body: SafeArea(
-        child: Center(
+        child: is Loading == true
+        ? const Center(
+          child: CircularProgressIndicator(
+            color: Color.fromARGB(255, 252, 33, 168)
+            ),
+          )
+        : Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 35),
             child: Column(
@@ -56,7 +65,6 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
                 const SizedBox(height: 20),
                 Pinput(
-                  onTap: showSnackBar(context, "button pressed"),
                   length: 6,
                   showCursor: true,
                   defaultPinTheme: PinTheme(
@@ -116,5 +124,15 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  void verifyOtp(BuildContext context, String userOtp) {}
+  void verifyOtp(BuildContext context, String userOtp) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    ap.verifyOtp(
+      context: context, 
+      verificationID: widget.verificationId, 
+      userOtp: userOtp, 
+      onSuccess: (){
+        
+      },
+    );
+  }
 }

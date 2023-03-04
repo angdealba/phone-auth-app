@@ -5,7 +5,6 @@ import 'package:phone_auth/provider/auth_provider.dart';
 import 'package:phone_auth/utils/utils.dart';
 import 'package:phone_auth/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
-import 'package:phone_auth/model/user_model.dart';
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({super.key});
@@ -28,6 +27,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     bioController.dispose();
   }
 
+  void selectImage() async {
+    image = await pickImage(context);
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -37,7 +42,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             child: Column(
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () => selectImage(),
                   child: image == null
                       ? const CircleAvatar(
                           backgroundColor: Colors.pink,
@@ -105,15 +110,16 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: TextFormField(
-        cursorColor: Colors.pink,
+        cursorColor: Color.fromARGB(255, 252, 33, 168),
         controller: controller,
         keyboardType: inputType,
-        maxLength: maxLines,
+        maxLines: maxLines,
         decoration: InputDecoration(
           prefixIcon: Container(
             margin: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0), color: Colors.pink),
+                borderRadius: BorderRadius.circular(8.0),
+                color: Color.fromARGB(255, 252, 33, 168)),
             child: Icon(
               icon,
               size: 20,
@@ -126,7 +132,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Colors.pink),
+            borderSide:
+                const BorderSide(color: Color.fromARGB(255, 252, 33, 168)),
           ),
           hintText: hintText,
           alignLabelWithHint: true,
@@ -149,6 +156,12 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         phoneNumber: "",
         uid: "");
     if (image != null) {
+      ap.saveUserDataFirebase(
+          context: context,
+          userModel: userModel,
+          profilePic: image!,
+          onSucess: () {});
+    } else {
       showSnackBar(context, "Please upload your profile photo");
     }
   }

@@ -1,9 +1,13 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:phone_auth/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:phone_auth/screens/otp_screen.dart';
+
+import '../model/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
   bool _isSignedIn = false;
@@ -88,6 +92,20 @@ class AuthProvider extends ChangeNotifier {
     } else {
       print("NEW USER");
       return false;
+    }
+  }
+
+  void saveUserDataFirebase(
+      {required BuildContext context,
+      required UserModel userModel,
+      required File profilePic,
+      required Function onSucess}) async {
+    _isLoading = true;
+    notifyListeners();
+    try {} on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message.toString());
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

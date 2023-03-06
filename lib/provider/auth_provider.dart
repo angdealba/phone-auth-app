@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,6 +31,13 @@ class AuthProvider extends ChangeNotifier {
   void checkSign() async {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _isSignedIn = s.getBool("is_signedin") ?? false;
+    notifyListeners();
+  }
+
+  Future setSignIn() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    s.setBool("is_signedin", true);
+    _isSignedIn = true;
     notifyListeners();
   }
 
@@ -134,5 +143,10 @@ class AuthProvider extends ChangeNotifier {
     TaskSnapshot snapshot = await uploadTask;
     String downloadURL = await snapshot.ref.getDownloadURL();
     return downloadURL;
+  }
+
+  Future saveUserDataSP() async {
+    SharedPreferences s = await SharedPreferences.getInstance();
+    await s.setString("user_model", jsonEncode(userModel.toMap()));
   }
 }

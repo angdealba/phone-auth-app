@@ -42,7 +42,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       ),
                       Container(
                         width: 200,
-                        height: 200,
+                        height: 170,
                         decoration: const BoxDecoration(
                             shape: BoxShape.rectangle, color: Colors.white),
                         child: Image.asset("assets/img3.png"),

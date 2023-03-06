@@ -1,12 +1,13 @@
-import 'dart:html';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:phone_auth/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:phone_auth/screens/otp_screen.dart';
-
+import 'dart:io';
 import '../model/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -19,6 +20,7 @@ class AuthProvider extends ChangeNotifier {
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   AuthProvider() {
     checkSign();
@@ -102,10 +104,15 @@ class AuthProvider extends ChangeNotifier {
       required Function onSucess}) async {
     _isLoading = true;
     notifyListeners();
-    try {} on FirebaseAuthException catch (e) {
+    try {
+      
+    } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message.toString());
       _isLoading = false;
       notifyListeners();
     }
+  }
+  Future<String> storeFile(String ref, File file) async{
+    UploadTask
   }
 }

@@ -34,68 +34,77 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        Provider.of<AuthProvider>(context, listen: true).isLoading;
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 5.0),
-          child: Center(
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () => selectImage(),
-                  child: image == null
-                      ? const CircleAvatar(
-                          backgroundColor: Colors.pink,
-                          radius: 50,
-                          child: Icon(Icons.account_circle,
-                              size: 50, color: Colors.white),
-                        )
-                      : CircleAvatar(
-                          backgroundImage: FileImage(image!),
-                          radius: 50,
-                        ),
+        child: isLoading == true
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.pink,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                  margin: const EdgeInsets.only(top: 20),
+              )
+            : SingleChildScrollView(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 25.0, horizontal: 5.0),
+                child: Center(
                   child: Column(
                     children: [
-                      textField(
-                          hintText: "John Smitch",
-                          icon: Icons.account_circle,
-                          inputType: TextInputType.name,
-                          maxLines: 1,
-                          controller: nameController),
-                      textField(
-                          hintText: "abc@example.com",
-                          icon: Icons.email,
-                          inputType: TextInputType.emailAddress,
-                          maxLines: 1,
-                          controller: emailController),
-                      textField(
-                          hintText: "Enter your bio here...",
-                          icon: Icons.edit,
-                          inputType: TextInputType.name,
-                          maxLines: 2,
-                          controller: bioController),
+                      InkWell(
+                        onTap: () => selectImage(),
+                        child: image == null
+                            ? const CircleAvatar(
+                                backgroundColor: Colors.pink,
+                                radius: 50,
+                                child: Icon(Icons.account_circle,
+                                    size: 50, color: Colors.white),
+                              )
+                            : CircleAvatar(
+                                backgroundImage: FileImage(image!),
+                                radius: 50,
+                              ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 15),
+                        margin: const EdgeInsets.only(top: 20),
+                        child: Column(
+                          children: [
+                            textField(
+                                hintText: "John Smitch",
+                                icon: Icons.account_circle,
+                                inputType: TextInputType.name,
+                                maxLines: 1,
+                                controller: nameController),
+                            textField(
+                                hintText: "abc@example.com",
+                                icon: Icons.email,
+                                inputType: TextInputType.emailAddress,
+                                maxLines: 1,
+                                controller: emailController),
+                            textField(
+                                hintText: "Enter your bio here...",
+                                icon: Icons.edit,
+                                inputType: TextInputType.name,
+                                maxLines: 2,
+                                controller: bioController),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.80,
+                        child: CustomButton(
+                          onPressed: () {},
+                          text: "Continue",
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.80,
-                  child: CustomButton(
-                    onPressed: () {},
-                    text: "Continue",
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }

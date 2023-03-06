@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class UserModel {
-  final String name;
-  final String email;
-  final String bio;
-  final String profilePic;
-  final String createdAt;
-  final String phoneNumber;
-  final String uid;
+  String name;
+  String email;
+  String bio;
+  String profilePic;
+  String createdAt;
+  String phoneNumber;
+  String uid;
 
   UserModel({
     required this.name,
@@ -29,5 +29,17 @@ class UserModel {
       createdAt: map['createdAt'] ?? '',
       profilePic: map['profilePic'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "name": name,
+      "email": email,
+      "uid": uid,
+      "bio": bio,
+      "profilePic": profilePic,
+      "phoneNumber": phoneNumber,
+      "createdAt": createdAt,
+    };
   }
 }

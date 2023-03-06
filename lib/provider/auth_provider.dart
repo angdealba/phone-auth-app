@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,6 +15,8 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? _uid;
   String get uid => _uid!;
+  UserModel? _userModel;
+  UserModel get userModel => _userModel!;
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
@@ -105,14 +105,34 @@ class AuthProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      
+      await storeFile("profilePic/$_uid", profilePic).then((value) {
+        userModel.profilePic = value;
+        userModel.createdAt = DateTime.now().millisecondsSinceEpoch.toString();
+        userModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
+        userModel.uid = _firebaseAuth.currentUser!.uid;
+      });
+      _userModel = userModel;
+
+      await _firebaseFirestore
+          .collection("users")
+          .doc(_uid)
+          .set(userModel.toMap())
+          .then((value) {
+        onSucess();
+        _isLoading = false;
+        notifyListeners();
+      });
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message.toString());
       _isLoading = false;
       notifyListeners();
     }
   }
-  Future<String> storeFile(String ref, File file) async{
-    UploadTask
+
+  Future<String> storeFile(String ref, File file) async {
+    UploadTask uploadTask = _firebaseStorage.ref().child(ref).putFile(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadURL = await snapshot.ref.getDownloadURL();
+    return downloadURL;
   }
 }
